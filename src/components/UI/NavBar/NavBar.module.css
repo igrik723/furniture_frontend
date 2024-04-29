@@ -1,0 +1,59 @@
+.NavWrapper{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.NavLogo{
+    width: 200px;
+    height: 200px;
+}
+
+.NavInputContainer {
+    position: relative;
+    width: 800px;
+    height: 40px;
+    border: 2px solid black;
+    border-radius: 5px;
+    overflow: hidden; /* чтобы изображение не выходило за пределы input */;
+}
+
+
+.NavInput{
+    width: 100%;
+    height: 100%;
+    border: none;
+    padding-right: 30px;
+}
+
+.NavInput::placeholder {
+    font-size: 16px;
+    padding-left: 10px;
+}
+
+.searchIcon{
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    height: 20px;
+    width: auto;
+}
+
+.NavLogos{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.basket{
+
+}
+
+.auth{
+    height: 45px;
+    width: 45px;
+}
