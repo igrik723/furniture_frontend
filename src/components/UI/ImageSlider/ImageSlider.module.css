@@ -1,0 +1,12 @@
+.img1,
+.img2,
+.img3,
+.img4,
+.img5,
+.img6 {
+    width: 1440px;
+    height: 500px;
+    display: block;
+    object-fit: cover;
+    /* Масштабирование изображения для заполнения контейнера */
+}
