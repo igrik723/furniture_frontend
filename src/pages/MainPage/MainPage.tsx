@@ -4,6 +4,7 @@ import ImageSlider from "../../components/UI/ImageSlider/ImageSlider";
 import styles from './MainPage.module.css'
 import AssortimentRange from "../../components/UI/AssortimentRange/AssortimentRange";
 import Advantages from "../../components/UI/Advantages/Advantages";
+import Footer from "../../components/UI/Footer/Footer";
 
 const MainPage = () => {
     return ( 
@@ -13,7 +14,8 @@ const MainPage = () => {
             <NavBar />
             <ImageSlider />
             <AssortimentRange />
-            <Advantages/>
+            <Advantages />
+            <Footer/>
         </div>
      );
 }

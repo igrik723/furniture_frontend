@@ -1,0 +1,27 @@
+.wrapper{
+    width: 100%;
+    height: 350px;
+    background-color: #379B89;
+}
+
+.infoWrapper{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.title{
+    color: #FFFFFF;
+}
+
+.contactsWrapper{
+    margin-right: 50px;
+}
+
+.logoWrapper{
+    margin-top: 60px;
+}
+
+.VK{
+    margin-right: 20px;
+}
