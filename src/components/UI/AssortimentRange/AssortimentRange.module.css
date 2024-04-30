@@ -1,0 +1,19 @@
+.wrapper{
+    margin-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.imagesWrapper{
+    display: flex;
+    gap: 100px;
+}
+
+.imageWrapper{
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
