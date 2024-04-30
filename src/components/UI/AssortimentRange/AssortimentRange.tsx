@@ -20,20 +20,20 @@ const AssortimentRange: React.FC = () => {
                 <div
                     className={styles.imageWrapper}
                 >
-                    <img src={table} alt="table"/>
-                    <h4>Столы</h4>
+                    <img className={styles.table} src={table} alt="table"/>
+                    <h4 className={styles.subTitle}>Столы</h4>
                 </div>
                 <div
                     className={styles.imageWrapper}
                 >
-                    <img src={cabinet} alt="cabinet"/>
-                    <h4>Тумбы</h4>
+                    <img className={styles.cabinet} src={cabinet} alt="cabinet"/>
+                    <h4 className={styles.subTitle}>Тумбы</h4>
                 </div>
                 <div
                     className={styles.imageWrapper}
                 >
-                    <img src={cupboard} alt="cupboard"/>
-                    <h4>Шкафы</h4>
+                    <img className={styles.cupboard} src={cupboard} alt="cupboard"/>
+                    <h4 className={styles.subTitle}>Шкафы</h4>
                 </div>
                 
             </div>
