@@ -10,6 +10,7 @@ import { closeAuthModal, closeBasketModal,  closeUserInfoModal, openAuthModal, o
 import BasketModal from "../../Modal/BasketModal/BasketModal";
 import AuthModal from "../../Modal/AuthModal/AuthModal";
 import UserInfoModal from "../../Modal/UserInfoModal/UserInfoModal";
+import { Button } from "react-bootstrap";
 
 
 const NavBar: React.FC = () => {

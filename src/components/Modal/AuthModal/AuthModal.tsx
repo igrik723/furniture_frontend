@@ -28,10 +28,10 @@ const AuthModal: React.FC<AuthModalProps> = ({ open, onClose }) => {
         try {
             if (isLogin) {
                 const response = await login({ email, password }).unwrap();
-                dispatch(setUser({ token: response.token, email: response.email, name: response.name, address: response.address, phoneNumber: response.phoneNumber }));
+                dispatch(setUser({ token: response.token, email: response.email, name: response.name, address: response.address, phoneNumber: response.phoneNumber, role: response.role }));
             } else {
                 const response = await register({ email, password, name, address, phoneNumber }).unwrap();
-                dispatch(setUser({ token: response.token, email: response.email, name: response.name, address: response.address, phoneNumber: response.phoneNumber }));
+                dispatch(setUser({ token: response.token, email: response.email, name: response.name, address: response.address, phoneNumber: response.phoneNumber, role: response.role }));
             }
             onClose(); 
         } catch (error) {

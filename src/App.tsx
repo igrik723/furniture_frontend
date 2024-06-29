@@ -13,9 +13,10 @@ const App: React.FC = () => {
     const name = localStorage.getItem('name')
     const address = localStorage.getItem('address')
     const phoneNumber = localStorage.getItem('phoneNumber')
+    const role = localStorage.getItem('role')
 
-    if (token && email && name && address && phoneNumber) {
-      dispatch(setUser({ token, email, name, address, phoneNumber }))
+    if (token && email && name && address && phoneNumber && role) {
+      dispatch(setUser({ token, email, name, address, phoneNumber, role }))
     }
   }, [dispatch])
 
