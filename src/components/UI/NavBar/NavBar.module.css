@@ -49,9 +49,15 @@
     gap: 5px;
 }
 
-.basket{
+.basketBtn{
+    border: 0;
 
 }
+.authBtn{
+    background-color: #fff;
+    border: 0;
+}
+
 
 .auth{
     height: 45px;
