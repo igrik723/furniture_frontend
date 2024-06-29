@@ -2,24 +2,24 @@ import { api } from "./api";
 
 export const userApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        login: builder.mutation <
-            { token: string },
-            { email: string;  password: string}
-            >({
-                query: (userData) => ({
-                    url: '/login',
-                    method: 'POST',
-                    body: userData
+        login: builder.mutation<
+            { token: string, name: string, email: string, address: string, phoneNumber: string },
+            { email: string; password: string }
+        >({
+            query: (userData) => ({
+                url: '/login',
+                method: 'POST',
+                body: userData
             })
         }),
         register: builder.mutation<
-            { email: string;  password: string, name: string},
-            { email: string;  password: string, name: string}
-            >({
-                query: (userData) => ({
-                    url: '/register',
-                    method: 'POST',
-                    body: userData
+            { token: string, email: string, name: string, address: string, phoneNumber: string  },
+            { email: string; password: string; name: string; address: string; phoneNumber: string }
+        >({
+            query: (userData) => ({
+                url: '/register',
+                method: 'POST',
+                body: userData
             })
         })
     })
@@ -28,9 +28,8 @@ export const userApi = api.injectEndpoints({
 export const {
     useRegisterMutation,
     useLoginMutation
-} = userApi
+} = userApi;
 
 export const {
     endpoints: { login, register }
-    
-} = userApi
+} = userApi;
