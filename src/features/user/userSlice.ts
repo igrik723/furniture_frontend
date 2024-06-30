@@ -35,6 +35,7 @@ const userSlice = createSlice({
             localStorage.setItem('name', action.payload.name);
             localStorage.setItem('address', action.payload.address)
             localStorage.setItem('phoneNumber', action.payload.phoneNumber)
+            localStorage.setItem('role', action.payload.role)
         },
         clearUser(state) {
             state.token = null;
