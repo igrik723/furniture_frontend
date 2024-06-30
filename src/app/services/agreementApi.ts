@@ -5,7 +5,7 @@ import { api } from "./api";
 export const agreementApi = api.injectEndpoints({
     endpoints: (builder) => ({
         createAgreement: builder.mutation<
-            Agreement, {dateOfEnd: Date, userId: number}
+            Agreement, {dateOfEnd: Date}
         >({
             query: (agreementData) => ({
                 url: '/agreements',
@@ -13,13 +13,10 @@ export const agreementApi = api.injectEndpoints({
                 body: agreementData
             })
         }),
-        getUserAgreement: builder.query<
-           Agreement[], {userId: number} 
-            >({
-                query: (agreementData) => ({
+        getUserAgreement: builder.query<Agreement[], void>({
+            query: () => ({
                 url: '/agreements',
                 method: 'GET',
-                body: agreementData
             })
         }),
         deleteAgreement: builder.mutation<
