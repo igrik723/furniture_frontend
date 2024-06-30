@@ -3,7 +3,7 @@ import { api } from "./api";
 
 export const saleApi = api.injectEndpoints({
     endpoints: (builder) => ({
-        createSale: builder.mutation<Sale, { agrenemtId: number; furnitureId: number; count: number }
+        createSale: builder.mutation<Sale, { agreementId: number; furnitureId: number; count: number }
         >({
             query: (saleData) => ({
                 url: '/sale',
