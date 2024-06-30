@@ -1,0 +1,19 @@
+.listContainer {
+    margin-bottom: 10px;
+}
+
+.itemContainer{
+    border: 1px solid black;
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.confirmBtn{
+    border: none;
+}
+
+.confirmImg{
+    width: 200px;
+    height: 100px;
+}
