@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "./services/api";
 import modalReducer from "../features/modal/modalSlice";
 import userReducer from "../features/user/userSlice"
+import modelsReducer from "../features/furniture/furnitureSlice"
 
 export const store = configureStore({
     reducer: {
         [api.reducerPath]: api.reducer,
         modal: modalReducer,
-        user: userReducer
+        user: userReducer,
+        models: modelsReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(api.middleware),
