@@ -1,0 +1,17 @@
+.agreementContainer {
+    margin: 10px 0 10px 0;
+    padding: 5px;
+    border: 1px solid black;
+}
+
+.modelsContainer {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+}
+
+.modelsWrapper {
+    margin: 10px 0 10px 0;
+    padding: 5px;
+    
+}
