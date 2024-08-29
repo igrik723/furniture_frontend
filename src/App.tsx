@@ -3,6 +3,9 @@ import './App.css';
 import MainPage from './pages/MainPage/MainPage';
 import { useDispatch } from 'react-redux';
 import { setUser } from './features/user/userSlice';
+import AppRouter from './components/AppRouter';
+import { BrowserRouter } from 'react-router-dom';
+import NavBar from './components/UI/NavBar/NavBar';
 
 const App: React.FC = () => {
   const dispatch = useDispatch()
@@ -23,7 +26,10 @@ const App: React.FC = () => {
 
   return (
     <div className="App">
-       <MainPage/>
+      <BrowserRouter>
+        <NavBar/>
+        <AppRouter />
+      </BrowserRouter>
     </div>
   );
 }
