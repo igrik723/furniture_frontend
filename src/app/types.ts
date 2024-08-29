@@ -36,4 +36,6 @@ export type FurnitureModel = {
   furnitureType: string;
   Property: string;
   Price: number;
+  count: number;
+  imageUrl: string
 };
