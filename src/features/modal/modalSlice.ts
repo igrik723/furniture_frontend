@@ -5,13 +5,17 @@ interface ModalState {
     isBasketModalOpen: boolean;
     isUserInfoModalOpen: boolean;
     isAddModelsModalOpen: boolean;
+    isErrorsModalOpen: boolean;
+    isUpdateModalOpen: boolean;
 }
 
 const initialState: ModalState = {
     isAuthModalOpen: false,
     isBasketModalOpen: false,
     isUserInfoModalOpen: false,
-    isAddModelsModalOpen: false
+    isAddModelsModalOpen: false,
+    isErrorsModalOpen: false,
+    isUpdateModalOpen: false,
 }
 
 const modalSlice = createSlice({
@@ -42,9 +46,34 @@ const modalSlice = createSlice({
         closeAddModelsModal(state) {
             state.isAddModelsModalOpen = false
         },
+        openErrorsModal(state) {
+            state.isErrorsModalOpen = true
+        },
+        closeErrorsModal(state) {
+            state.isErrorsModalOpen = false
+        },
+        openUpdateModal(state) {
+            state.isUpdateModalOpen = true
+        },
+        closeUpdateModal(state) {
+            state.isUpdateModalOpen = false
+        },
 
     }
 })
 
-export const { openAuthModal, closeAuthModal, openBasketModal, closeBasketModal, openUserInfoModal, closeUserInfoModal, openAddModelsModal, closeAddModelsModal } = modalSlice.actions;
+export const {
+    openAuthModal,
+    closeAuthModal,
+    openBasketModal,
+    closeBasketModal,
+    openUserInfoModal, 
+    closeUserInfoModal, 
+    openAddModelsModal, 
+    closeAddModelsModal, 
+    openErrorsModal, 
+    closeErrorsModal,
+    openUpdateModal,
+    closeUpdateModal,
+} = modalSlice.actions;
 export default modalSlice.reducer;
