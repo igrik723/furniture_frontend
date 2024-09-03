@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+// NavBar.tsx
+import React from "react";
+import { useState } from "react";
 import styles from './NavBar.module.css';
 import basket from '../../../assets/корзина.png';
 import auth from '../../../assets/авторизация.png';
-import clear from '../../../assets/крестик.png';
 import logo from '../../../assets/лого.jpg';
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../app/store";
@@ -14,6 +15,8 @@ import { Button } from "react-bootstrap";
 import AddModelsModal from "../../Modal/AddModelsModal/AddModelsModal";
 import { useSearchModelsQuery } from "../../../app/services/furnitureModelApi";
 import SearchList from "../SearchList/SearchList";
+import Input from "../Input/Input";
+import { useNavigate } from "react-router-dom";
 
 const NavBar: React.FC = () => {
     const dispatch = useDispatch();
@@ -23,22 +26,13 @@ const NavBar: React.FC = () => {
     const isAddModelsModalOpen = useSelector((state: RootState) => state.modal.isAddModelsModalOpen);
     const user = useSelector((state: RootState) => state.user);
 
-    const [searchTerm, setSearchTerm] = useState("");
-    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState(searchTerm);
+    const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
+
     const { data: searchResults, isLoading, isError } = useSearchModelsQuery(debouncedSearchTerm, {
         skip: !debouncedSearchTerm,
     });
 
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedSearchTerm(searchTerm);
-        }, 300);
-
-        return () => {
-            clearTimeout(handler);
-        };
-    }, [searchTerm]);
-
+    const navigate = useNavigate()
 
     const handleAuthButtonClick = () => {
         if (user.token) {
@@ -51,20 +45,14 @@ const NavBar: React.FC = () => {
     return (
         <div>
             <div className={styles.NavWrapper}>
-                <img src={logo} className={styles.NavLogo} alt="Логотип" />
-                <div className={styles.NavInputContainer}>
-                    <input
-                        className={styles.NavInput}
-                        placeholder="поиск"
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                    <button
-                        onClick={() => setSearchTerm('')}
-                    >
-                        <img src={clear} className={styles.searchIcon} alt="Search" />
-                    </button>
-                </div>
+                <button
+                    className={styles.LogoBtn}
+                    onClick={() => navigate('/')}
+                >
+                    <img src={logo} className={styles.NavLogo} alt="Логотип" />
+                </button>
+                
+                <Input onSearchChange={setDebouncedSearchTerm} />
 
                 <div className={styles.NavLogos}>
                     <button className={styles.basketBtn} onClick={() => dispatch(openBasketModal())}>
@@ -73,7 +61,7 @@ const NavBar: React.FC = () => {
 
                     <button className={styles.authBtn} onClick={handleAuthButtonClick}>
                         <img src={auth} className={styles.auth} alt="Авторизация" />
-                    </button>
+                    </button>           
                     {user.role === 'Admin' && (
                         <Button onClick={() => dispatch(openAddModelsModal())}>
                             Добавить мебель
@@ -86,11 +74,11 @@ const NavBar: React.FC = () => {
                 <UserInfoModal open={isUserInfoModalOpen} onClose={() => dispatch(closeUserInfoModal())} user={user} />
                 <AddModelsModal open={isAddModelsModalOpen} onClose={() => dispatch(closeAddModelsModal())} />
             </div>
+            
             {debouncedSearchTerm && (
-                <SearchList results={searchResults || []} isLoading={isLoading} isError={isError}/>
+                <SearchList results={searchResults || []} isLoading={isLoading} isError={isError} />
             )}
         </div>
-        
     );
 }
 
