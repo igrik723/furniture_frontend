@@ -9,7 +9,8 @@ interface SearchList {
     furnitureName: string;
     furnitureType: string;
     Property: string;
-    Price: number
+    Price: number;
+    count: number;
 }
 
 interface SearchListProps {
