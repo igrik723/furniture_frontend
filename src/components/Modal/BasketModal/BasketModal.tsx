@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, Typography, Button, TextField } from '@mui/material';
-import { createAgreement, useCreateAgreementMutation, useGetUserAgreementQuery } from '../../../app/services/agreementApi';
-import { useSelector } from 'react-redux';
+import { useCreateAgreementMutation, useGetUserAgreementQuery } from '../../../app/services/agreementApi';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../../app/store";
 import styles from "./BasketModal.module.css"
 import { useCreateSaleMutation } from '../../../app/services/saleApi';
-import { furnitureModelApi } from '../../../app/services/furnitureModelApi';
+import deleteIcon from "../../../assets/delete.png"
+import ErrorsModal from '../ErrorsModal/ErrorsModal';
+import { closeErrorsModal, openErrorsModal } from '../../../features/modal/modalSlice';
+import { removeModel } from '../../../features/furniture/furnitureSlice';
 
 interface Agreement {
   id: number;
@@ -18,9 +21,12 @@ interface BasketModalProps {
 }
 
 const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
+  const dispatch = useDispatch()
+  const isErrorsModalOpen = useSelector((state: RootState) => state.modal.isErrorsModalOpen)
   const [isMyAgreements, setIsMyAgreements] = useState(false);
   const user = useSelector((state: RootState) => state.user);
   const models = useSelector((state: RootState) => state.models.models)
+  const [modelsCount, setModelsCount] = useState<{ [key: number]: number}>({})
   const [endDate, setEndDate] = useState('')
   const { data: userAgreements, error, isLoading, refetch } = useGetUserAgreementQuery(undefined, {
     skip: !user.token
@@ -38,26 +44,48 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
     onClose();
   };
 
+  const handleDeteleModel = (id: number) => {
+    dispatch(removeModel(id))
+  }
+
   const handleCreateAgreement = async () => {
     try {
       if (!endDate) {
         console.error('Дата окончания не указана')
         return
       }
+      
+      for (const model of models) {
+        const count = modelsCount[model.id] || 0;
+        if (count > model.count) {
+          dispatch(openErrorsModal());
+          return;
+        }
+      }
+
       const agreementDate = { dateOfEnd: new Date(endDate) }
       const createdAgreement = await createAgreement(agreementDate).unwrap()
       for (const model of models) {
         const saleData = {
           agreementId: createdAgreement.id,
           furnitureId: model.id,
-          count: 5
+          count: modelsCount[model.id] || 0
         };
+  
         await createSale(saleData)
       }
+      setEndDate('')
       onClose()
     } catch (error) {
       console.error('Failed to create agreement and sales:', error);
     }
+  }
+
+  const handleCountChange = (modelId: number, value: string) => {
+    setModelsCount((prev) => ({
+      ...prev,
+      [modelId]: parseInt(value, 10) || 0
+    }))
   }
 
   return (
@@ -101,18 +129,38 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
                       Продажа:
                     </div>
                     <div
-                      className={styles.modelsContainer}
+                      className={styles.modelsWrapper}
                     >
+                      <div
+                        className={styles.modelsContainer}
+                      >
 
-                      <div className={styles.modelsWrapper} key={model.id}>
-                        <Typography>Название: {model.furnitureName}</Typography>
-                        <Typography>Тип: {model.furnitureType}</Typography>
-                        <Typography>Свойства: {model.Property}</Typography>
-                        <Typography>Цена: {model.Price}</Typography>
+                        <div className={styles.models} key={model.id}>
+                          <Typography>Название: {model.furnitureName}</Typography>
+                          <Typography>Тип: {model.furnitureType}</Typography>
+                          <Typography>Свойства: {model.Property}</Typography>
+                          <Typography>Цена: {model.Price}</Typography>
+                        </div>
+                        <TextField
+                          value={modelsCount[model.id]}
+                          onChange={(e) => handleCountChange(model.id, e.target.value)}
+                          label="Кол-во"
+                          type='number'
+                          fullWidth margin="normal"
+                          style={{ marginLeft: '5px', width: '90%' }}
+                        />
                       </div>
-                      <TextField label="Кол-во" type='number' fullWidth margin="normal" style={{ marginLeft: '5px', width: '90%' }} />
+                      <button
+                        onClick={() => handleDeteleModel(model.id)}
+                        className={styles.deleteBtn}
+                      >
+                        <img
+                          className={styles.deleteIcon}
+                          alt='delete'
+                          src={deleteIcon}
+                        />
+                      </button>
                     </div>
-
                   </div>
                   
                 ))
@@ -127,6 +175,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
             </Button>
           </>
         )}
+        <ErrorsModal open={isErrorsModalOpen} onClose={() => dispatch(closeErrorsModal())} error={'Вы добавили товар, которого нет в наличии, проверьте корзину и повторите попытку'} />
       </Box>
     </Modal>
   );
