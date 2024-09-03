@@ -11,7 +11,6 @@ const MainPage = () => {
         <div
             className={styles.wrapper}
         >
-            <NavBar />
             <ImageSlider />
             <AssortimentRange />
             <Advantages />
