@@ -6,7 +6,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { Button, CardActionArea, CardActions } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { addModel } from '../../../features/furniture/furnitureSlice';
+import { addModelToBasket } from '../../../features/furniture/basketSlice';
 import { BASE_URL } from '../../../constants';
 import { RootState } from '../../../app/store';
 import styles from './ModelCard.module.css'
@@ -30,7 +30,7 @@ interface ModelCardProps {
     onRemove: (id: number) => void
 }
 
-const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
+const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove}) => {
     const user = useSelector((state: RootState) => state.user)
     const isUpdateModalOpen = useSelector((state: RootState) => state.modal.isUpdateModalOpen)
     const dispatch = useDispatch()
@@ -48,7 +48,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
     }
 
     const handleClick = (model: furnitureData) => {
-        dispatch(addModel(model))
+        dispatch(addModelToBasket(model))
     }
 
 
@@ -86,16 +86,21 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
                         <Button size="small" color="primary"
                             onClick={() => dispatch(openUpdateModal())}
                         >
-                            Изменить количество
+                            Изменить количество 
                         </Button>
                         <button
                             onClick={() => handleDelete(furnitureData.id)}
                             className={styles.deleteBtn}
                         >
-                            <img
-                                className={styles.deleteIcon}
-                                alt='delete'
-                                src={deleteIcon} />
+                            <div
+                                className={styles.deleteIconContainer}
+                            >
+                                <img
+                                    className={styles.deleteIcon}
+                                    alt='delete'
+                                    src={deleteIcon}
+                                />
+                            </div>  
                         </button>
                         
                     </div>
