@@ -89,6 +89,7 @@ const AddModelsModal: React.FC<AuthModalProps> = ({ open, onClose }) => {
                         value={count}
                         onChange={(e) => setCount(e.target.value)}
                         sx={{
+                            'marginTop':'10px',
                             '& input[type=number]': {
                                 '-moz-appearance': 'textfield',
                             },
