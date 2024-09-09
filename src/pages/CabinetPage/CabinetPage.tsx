@@ -16,14 +16,14 @@ const CupboardPage = () => {
   const handleRemoveModel = (id: number) => {
     setCabinets((prevCabinets) => prevCabinets.filter(cabinet => cabinet.id !== id))
   }
- 
+
   return (
     <div
       className={styles.CabinetPageContainer}
     >
-      {cabinets.map(cabinet => 
-       <ModelCard furnitureData={cabinet} onRemove={handleRemoveModel}/>
-     )}
+      {cabinets.map(cabinet =>
+        <ModelCard furnitureData={cabinet} onRemove={handleRemoveModel} />
+      )}
     </div>
   )
 }
