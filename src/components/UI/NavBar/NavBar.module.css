@@ -25,8 +25,18 @@
 
 .basketBtn{
     border: 0;
-
+    background-color: #fff;
 }
+
+
+.basket {
+    transition: 0.2s ease;
+}
+
+.basket:hover {
+    transform: translateY(10px);
+}
+
 .authBtn{
     background-color: #fff;
     border: 0;
@@ -36,6 +46,11 @@
 .auth{
     height: 45px;
     width: 45px;
+    transition:  0.2s ease;
+}
+
+.auth:hover {
+    transform: translateY(10px);
 }
 
 
