@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './SearchList.module.css'
 import confirm from '../../../assets/check-mark-button.webp'
 import { useDispatch } from 'react-redux'
-import { addModel } from '../../../features/furniture/furnitureSlice'
+import { addModelToBasket } from '../../../features/furniture/basketSlice'
 
 interface SearchList {
     id: number;
@@ -11,6 +11,7 @@ interface SearchList {
     Property: string;
     Price: number;
     count: number;
+    imageUrl: string;
 }
 
 interface SearchListProps {
@@ -22,7 +23,7 @@ const SearchList: React.FC<SearchListProps> = ({ results, isLoading, isError }) 
     const dispatch = useDispatch()
 
     const handleClick = (model: SearchList) => {
-        dispatch(addModel(model))
+        dispatch(addModelToBasket(model))
     }
     if (isLoading) return <div>Загрузка</div>
     if (isError) return <div>Ошибка при загрузке данных</div>
