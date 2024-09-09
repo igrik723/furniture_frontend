@@ -8,7 +8,7 @@ import { useCreateSaleMutation } from '../../../app/services/saleApi';
 import deleteIcon from "../../../assets/delete.png"
 import ErrorsModal from '../ErrorsModal/ErrorsModal';
 import { closeErrorsModal, openErrorsModal } from '../../../features/modal/modalSlice';
-import { removeModel } from '../../../features/furniture/furnitureSlice';
+import { removeModelFromBasket } from '../../../features/furniture/basketSlice';
 
 interface Agreement {
   id: number;
@@ -25,7 +25,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
   const isErrorsModalOpen = useSelector((state: RootState) => state.modal.isErrorsModalOpen)
   const [isMyAgreements, setIsMyAgreements] = useState(false);
   const user = useSelector((state: RootState) => state.user);
-  const models = useSelector((state: RootState) => state.models.models)
+  const basketModels = useSelector((state: RootState) => state.basket.models)
   const [modelsCount, setModelsCount] = useState<{ [key: number]: number}>({})
   const [endDate, setEndDate] = useState('')
   const { data: userAgreements, error, isLoading, refetch } = useGetUserAgreementQuery(undefined, {
@@ -45,7 +45,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
   };
 
   const handleDeteleModel = (id: number) => {
-    dispatch(removeModel(id))
+    dispatch(removeModelFromBasket(id))
   }
 
   const handleCreateAgreement = async () => {
@@ -55,7 +55,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
         return
       }
       
-      for (const model of models) {
+      for (const model of basketModels) {
         const count = modelsCount[model.id] || 0;
         if (count > model.count) {
           dispatch(openErrorsModal());
@@ -65,7 +65,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
 
       const agreementDate = { dateOfEnd: new Date(endDate) }
       const createdAgreement = await createAgreement(agreementDate).unwrap()
-      for (const model of models) {
+      for (const model of basketModels) {
         const saleData = {
           agreementId: createdAgreement.id,
           furnitureId: model.id,
@@ -122,8 +122,8 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
         ) : (
           <>
             <Typography variant="h6">Новый договор</Typography>
-              {models ? 
-                models.map((model) => (
+              {basketModels ? 
+                basketModels.map((model) => (
                   <div>
                     <div>
                       Продажа:
