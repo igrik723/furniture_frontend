@@ -11,9 +11,8 @@ import { BASE_URL } from '../../../constants';
 import { RootState } from '../../../app/store';
 import styles from './ModelCard.module.css'
 import { useDeleteModelMutation } from '../../../app/services/furnitureModelApi';
-import { useEffect, useState } from 'react';
+import {useState } from 'react';
 import UpdateModal from '../../Modal/UpdateModal/UpdateModal';
-import { closeUpdateModal, openUpdateModal } from '../../../features/modal/modalSlice';
 
 export interface furnitureData {
     id: number;
@@ -30,27 +29,36 @@ interface ModelCardProps {
     onRemove: (id: number) => void
 }
 
-const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove}) => {
+const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
     const user = useSelector((state: RootState) => state.user)
-    const isUpdateModalOpen = useSelector((state: RootState) => state.modal.isUpdateModalOpen)
+    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [currentId, setCurrentId] = useState<number | null>(null) 
     const dispatch = useDispatch()
 
     const [deleteModel] = useDeleteModelMutation()
 
-    const handleDelete =async (id: number) => {
+    const handleDelete = async (id: number) => {
         try {
             await deleteModel(id).unwrap();
             onRemove(id)
         } catch (error) {
             console.error("Не удалось удалить модель", error)
         }
-        deleteModel(id)
     }
 
     const handleClick = (model: furnitureData) => {
         dispatch(addModelToBasket(model))
     }
 
+    const handleOpenUpdateModal = (id: number) => {
+        setCurrentId(id) 
+        setIsModalOpen(true)  
+    }
+
+    const handleCloseUpdateModal = () => {
+        setIsModalOpen(false) 
+        setCurrentId(null)
+    }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -80,39 +88,33 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove}) => {
             </CardActionArea>
             <CardActions>
                 {user.role === 'Admin' ?
-                    <div
-                        className={styles.btnContainer}
-                    >  
+                    <div className={styles.btnContainer}>
                         <Button size="small" color="primary"
-                            onClick={() => dispatch(openUpdateModal())}
+                            onClick={() => handleOpenUpdateModal(furnitureData.id)}  
                         >
-                            Изменить количество 
+                            Изменить количество
                         </Button>
                         <button
                             onClick={() => handleDelete(furnitureData.id)}
                             className={styles.deleteBtn}
                         >
-                            <div
-                                className={styles.deleteIconContainer}
-                            >
-                                <img
-                                    className={styles.deleteIcon}
-                                    alt='delete'
-                                    src={deleteIcon}
-                                />
-                            </div>  
+                            <div className={styles.deleteIconContainer}>
+                                <img className={styles.deleteIcon} alt='delete' src={deleteIcon} />
+                            </div>
                         </button>
-                        
                     </div>
-                    
-
-                    : <Button size="small" color="primary"
-                        onClick={() => handleClick(furnitureData)}
-                    >
+                    :
+                    <Button size="small" color="primary" onClick={() => handleClick(furnitureData)}>
                         Добавить в корзину
                     </Button>
                 }
-                <UpdateModal open={isUpdateModalOpen} onClose={() => dispatch(closeUpdateModal())} id={furnitureData.id} />
+                {currentId && (
+                    <UpdateModal
+                        open={isModalOpen}
+                        onClose={handleCloseUpdateModal}
+                        id={currentId} 
+                    />
+                )}
             </CardActions>
         </Card>
     );
