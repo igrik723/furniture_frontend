@@ -23,7 +23,7 @@ const TablePage: React.FC = () => {
     >
       <div className={styles.ModelCardContainer}>
         {tables.map((table) =>
-          <ModelCard furnitureData={table} onRemove={handleRemoveModel} />
+          <ModelCard key={table.id} furnitureData={table} onRemove={handleRemoveModel} />
         )}
       </div>
       
