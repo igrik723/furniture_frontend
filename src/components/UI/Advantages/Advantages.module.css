@@ -1,24 +1,24 @@
-.wrapper{
+.wrapper {
     margin-top: 50px;
     display: flex;
     flex-direction: column;
-    align-items: center
+    align-items: center;
 }
 
-.mainTitle{
+.mainTitle {
     margin-bottom: 20px;
 }
 
-.subTitle{
+.subTitle {
     margin-top: 10px;
 }
 
-.imagesWrapper{
+.imagesWrapper {
     display: flex;
     gap: 200px;
 }
 
-.imageWrapper{
+.imageWrapper {
     display: flex;
     flex-direction: column;
     align-items: center;
