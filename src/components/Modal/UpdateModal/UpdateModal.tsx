@@ -8,11 +8,10 @@ import { useUpdateModelCountMutation } from '../../../app/services/furnitureMode
 interface UpdateModalProps {
     open: boolean,
     onClose: () => void,
-    id: number,
+    id: number
 }
 
 const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
-    const dispatch = useDispatch()
     const [count, setCount] = useState('0')
     const [updateModelCount] = useUpdateModelCountMutation()
 
@@ -29,10 +28,6 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
         }
     }
 
-
-
-    
-
     return (
         <Modal open={open} onClose={onClose}>
             <Box sx={{ ...modalStyle }}>
@@ -47,6 +42,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
         </Modal>
     )
 }
+
 
 const modalStyle = {
     position: 'absolute' as 'absolute',
