@@ -29,9 +29,11 @@ interface ModelCardProps {
     onRemove: (id: number) => void
 }
 
+
+
 const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
     const user = useSelector((state: RootState) => state.user)
-    const [isModalOpen, setIsModalOpen] = useState(false)
+    const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [currentId, setCurrentId] = useState<number | null>(null) 
     const dispatch = useDispatch()
 
@@ -52,11 +54,11 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
 
     const handleOpenUpdateModal = (id: number) => {
         setCurrentId(id) 
-        setIsModalOpen(true)  
+        setIsUpdateModalOpen(true)  
     }
 
     const handleCloseUpdateModal = () => {
-        setIsModalOpen(false) 
+        setIsUpdateModalOpen(false) 
         setCurrentId(null)
     }
 
@@ -110,7 +112,7 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
                 }
                 {currentId && (
                     <UpdateModal
-                        open={isModalOpen}
+                        open={isUpdateModalOpen}
                         onClose={handleCloseUpdateModal}
                         id={currentId} 
                     />
