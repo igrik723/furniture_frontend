@@ -14,7 +14,7 @@ const TablePage: React.FC = () => {
   }, [fetchedTables])
 
   const handleRemoveModel = (id: number) => {
-    setTables((prevTables) => prevTables.filter(table => table.id != id))
+    setTables((prevTables) => prevTables.filter(table => table.id !== id))
   }
 
   return (
@@ -32,3 +32,4 @@ const TablePage: React.FC = () => {
 }
 
 export default TablePage
+
