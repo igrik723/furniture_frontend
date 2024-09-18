@@ -32,22 +32,17 @@ const SearchList: React.FC<SearchListProps> = ({ results, isLoading, isError }) 
     return (
         <div className={styles.listContainer}>
             {results.map((model) => 
-                <div key={model.id} className={styles.itemContainer}>
+                <div
+                    key={model.id}
+                    className={styles.itemContainer}
+                    onClick={() => handleClick(model)}
+                >
                     <div>
-                        <div>Название: {model.furnitureName}</div>
-                        <div>Тип: {model.furnitureType}</div>
-                        <div>Свойства: {model.Property}</div>
-                        <div>Цена: {model.Price}</div>
+                        <span className={styles.property}>Тип: {model.furnitureType}</span>
+                        <span className={styles.property}>Название: {model.furnitureName}</span>
+                        <span className={styles.property}>Свойства: {model.Property}</span>
+                        <span className={styles.property}>Цена: {model.Price}</span>
                     </div>
-                    <button
-                        onClick={() => handleClick(model)}
-                        className={styles.confirmBtn}
-                    >
-                        <img
-                            className={styles.confirmImg}
-                            src={confirm}
-                        />
-                    </button>
                 </div>
             )}
         </div>

@@ -1,4 +1,8 @@
 .agreementContainer {
+    max-height: 400px;
+    overflow-y: auto;
+}
+.agreementWrapper {
     margin: 10px 0 10px 0;
     padding: 5px;
     border: 1px solid black;
@@ -35,5 +39,10 @@
 
 .deleteIcon:hover {
     transform: translateY(10px);
+}
+
+.salesContainer {
+    max-height: 400px;
+    overflow-y: auto;
 }
 
