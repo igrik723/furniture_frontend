@@ -102,69 +102,73 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
         {isMyAgreements ? (
           <>
             <Typography variant="h6">Мои договоры</Typography>
-            {isLoading ? (
-              <div>Загрузка...</div>
-            ) : error ? (
-              <div>Ошибка при загрузке данных</div>
-            ) : (
-              userAgreements && userAgreements.map((agreement: Agreement) => (
-                <div className={styles.agreementContainer} key={agreement.id}>
-                  <Typography>Номер договора: {agreement.id}</Typography>
-                  <Typography>Имя заказчика: {user.name}</Typography>
-                  <Typography>Дата исполнения договора: {new Date(agreement.dateOfEnd).toLocaleDateString()}</Typography>
-                </div>
-              ))
-            )}
+            <div className={styles.agreementContainer}>
+              {isLoading ? (
+                <div>Загрузка...</div>
+              ) : error ? (
+                <div>Ошибка при загрузке данных</div>
+              ) : (
+                userAgreements && userAgreements.map((agreement: Agreement) => (
+                  <div className={styles.agreementWrapper} key={agreement.id}>
+                    <Typography>Номер договора: {agreement.id}</Typography>
+                    <Typography>Имя заказчика: {user.name}</Typography>
+                    <Typography>Дата исполнения договора: {new Date(agreement.dateOfEnd).toLocaleDateString()}</Typography>
+                  </div>
+                ))
+              )}
+            </div>
             <Button onClick={handleClose} variant="contained" color="primary" sx={{ mt: 2 }}>
               Выход
             </Button>
           </>
         ) : (
           <>
-            <Typography variant="h6">Новый договор</Typography>
-              {basketModels ? 
-                basketModels.map((model) => (
-                  <div>
+              <Typography variant="h6">Новый договор</Typography>
+              <div className={styles.salesContainer}>
+                {basketModels ?
+                  basketModels.map((model) => (
                     <div>
-                      Продажа:
-                    </div>
-                    <div
-                      className={styles.modelsWrapper}
-                    >
-                      <div
-                        className={styles.modelsContainer}
-                      >
-
-                        <div className={styles.models} key={model.id}>
-                          <Typography>Название: {model.furnitureName}</Typography>
-                          <Typography>Тип: {model.furnitureType}</Typography>
-                          <Typography>Свойства: {model.Property}</Typography>
-                          <Typography>Цена: {model.Price}</Typography>
-                        </div>
-                        <TextField
-                          value={modelsCount[model.id]}
-                          onChange={(e) => handleCountChange(model.id, e.target.value)}
-                          label="Кол-во"
-                          type='number'
-                          fullWidth margin="normal"
-                          style={{ marginLeft: '5px', width: '90%' }}
-                        />
+                      <div>
+                        Продажа:
                       </div>
-                      <button
-                        onClick={() => handleDeteleModel(model.id)}
-                        className={styles.deleteBtn}
+                      <div
+                        className={styles.modelsWrapper}
                       >
-                        <img
-                          className={styles.deleteIcon}
-                          alt='delete'
-                          src={deleteIcon}
-                        />
-                      </button>
+                        <div
+                          className={styles.modelsContainer}
+                        >
+
+                          <div className={styles.models} key={model.id}>
+                            <Typography>Название: {model.furnitureName}</Typography>
+                            <Typography>Тип: {model.furnitureType}</Typography>
+                            <Typography>Свойства: {model.Property}</Typography>
+                            <Typography>Цена: {model.Price}</Typography>
+                          </div>
+                          <TextField
+                            value={modelsCount[model.id]}
+                            onChange={(e) => handleCountChange(model.id, e.target.value)}
+                            label="Кол-во"
+                            type='number'
+                            fullWidth margin="normal"
+                            style={{ marginLeft: '5px', width: '90%' }}
+                          />
+                        </div>
+                        <button
+                          onClick={() => handleDeteleModel(model.id)}
+                          className={styles.deleteBtn}
+                        >
+                          <img
+                            className={styles.deleteIcon}
+                            alt='delete'
+                            src={deleteIcon}
+                          />
+                        </button>
+                      </div>
                     </div>
-                  </div>
-                  
-                ))
-               : null}
+
+                  ))
+                  : null}
+              </div>
               <TextField label="Дата исполнения" fullWidth margin="normal" value={endDate} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setEndDate(e.target.value)} />
               <Button
                 onClick={handleCreateAgreement}
