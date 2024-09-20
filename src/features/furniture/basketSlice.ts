@@ -10,8 +10,8 @@ const initialState: SelectedModelsState = {
     models: []
 }
 
-export const selectedModelsSlice = createSlice({
-    name: 'selectedModels',
+export const basketSlice = createSlice({
+    name: 'basket',
     initialState,
     reducers: {
         addModelToBasket: (state, action: PayloadAction<SearchList>) => {
@@ -23,7 +23,7 @@ export const selectedModelsSlice = createSlice({
     }
 })
 
-export const { addModelToBasket, removeModelFromBasket } = selectedModelsSlice.actions;
+export const { addModelToBasket, removeModelFromBasket } = basketSlice.actions;
 
-export default selectedModelsSlice.reducer
+export default basketSlice.reducer
 
