@@ -2,20 +2,24 @@ import React, { useEffect, useState } from 'react'
 import { useSearchModelsQuery } from '../../app/services/furnitureModelApi'
 import ModelCard, { furnitureData } from '../../components/UI/ModelCard/ModelCard'
 import styles from './TablePage.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
+import { setTables } from '../../features/furniture/tableSlice';
+
 
 const TablePage: React.FC = () => {
   const { data: fetchedTables, error, isLoading } = useSearchModelsQuery('стол')
-  const [tables, setTables] = useState<furnitureData[]>([])
+  const typeOfModel = 'table'
+  const tables = useSelector((state: RootState) => state.tables.tables)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (fetchedTables) {
-      setTables(fetchedTables)
+      dispatch(setTables(fetchedTables))
     }
   }, [fetchedTables])
 
-  const handleRemoveModel = (id: number) => {
-    setTables((prevTables) => prevTables.filter(table => table.id !== id))
-  }
+
 
   return (
     <div
@@ -23,7 +27,11 @@ const TablePage: React.FC = () => {
     >
       <div className={styles.ModelCardContainer}>
         {tables.map((table) =>
-          <ModelCard key={table.id} furnitureData={table} onRemove={handleRemoveModel} />
+          <ModelCard
+            key={table.id}
+            furnitureData={table}
+            typeOfModel='table'
+          />
         )}
       </div>
       

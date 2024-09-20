@@ -2,27 +2,33 @@ import React, { useEffect, useState } from 'react'
 import { useSearchModelsQuery } from '../../app/services/furnitureModelApi'
 import ModelCard, { furnitureData } from '../../components/UI/ModelCard/ModelCard'
 import styles from './Cupboard.module.css'
+import { useDispatch, useSelector } from 'react-redux'
+import { RootState } from '../../app/store'
+import { setCupboards } from '../../features/furniture/cupboardSlice'
 
 const CupboardPage = () => {
   const { data: fetchedCupboard, error, isLoading } = useSearchModelsQuery('шкаф')
-  const [cupboards, setCupboards] = useState<furnitureData[]>([])
+  const cupboards = useSelector((state: RootState) => state.cupboards.cupboards)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (fetchedCupboard) {
-      setCupboards(fetchedCupboard)
+      dispatch(setCupboards(fetchedCupboard))
     }
   }, [fetchedCupboard])
 
-  const handleRemoveNModel = (id: number) => {
-    setCupboards((prevCupboards) => prevCupboards.filter(cupboard => cupboard.id !== id))
-  }
+
 
   return (
     <div
       className={styles.CupboardPageContainer}
     >
-      {cupboards.map(cupboard =>
-        <ModelCard key={cupboard.id} furnitureData={cupboard} onRemove={handleRemoveNModel} />
+      {cupboards.map((cupboard) =>
+        <ModelCard
+          key={cupboard.id}
+          furnitureData={cupboard}
+          typeOfModel='cupboard'
+        />
       )}
     </div>
   )

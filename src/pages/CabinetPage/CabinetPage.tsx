@@ -2,27 +2,37 @@ import React, { useEffect, useState } from 'react'
 import { useSearchModelsQuery } from '../../app/services/furnitureModelApi'
 import ModelCard, { furnitureData } from '../../components/UI/ModelCard/ModelCard'
 import styles from './CabinetPage.module.css'
+import { RootState } from '../../app/store'
+import { useDispatch, useSelector } from 'react-redux'
+import { setCabinets } from '../../features/furniture/cabinetSlice'
+
 
 const CupboardPage = () => {
   const { data: fetchedCabinets, error, isLoading } = useSearchModelsQuery('тумба')
-  const [cabinets, setCabinets] = useState<furnitureData[]>([])
+  const typeOfModel = 'cabinet'
+  const cabinets = useSelector((state: RootState) => state.cabinets.cabinets)
+  const dispatch = useDispatch()
+
+
 
   useEffect(() => {
     if (fetchedCabinets) {
-      setCabinets(fetchedCabinets)
+      dispatch(setCabinets(fetchedCabinets))
     }
   }, [fetchedCabinets])
 
-  const handleRemoveModel = (id: number) => {
-    setCabinets((prevCabinets) => prevCabinets.filter(cabinet => cabinet.id !== id))
-  }
+
 
   return (
     <div
       className={styles.CabinetPageContainer}
     >
-      {cabinets.map(cabinet =>
-        <ModelCard furnitureData={cabinet} onRemove={handleRemoveModel} />
+      {cabinets.map((cabinet) =>
+        <ModelCard
+          key={cabinet.id}
+          furnitureData={cabinet}
+          typeOfModel='cabinet'
+        />
       )}
     </div>
   )
