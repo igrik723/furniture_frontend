@@ -21,6 +21,7 @@ interface BasketModalProps {
 }
 
 const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
+  const [errorMessage, setErrorMessage] = useState('')
   const dispatch = useDispatch()
   const isErrorsModalOpen = useSelector((state: RootState) => state.modal.isErrorsModalOpen)
   const [isMyAgreements, setIsMyAgreements] = useState(false);
@@ -50,15 +51,32 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
 
   const handleCreateAgreement = async () => {
     try {
+      if (!user.role) {
+        setErrorMessage('Чтобы оформить договор необходимо зарегистрироваться')
+        dispatch(openErrorsModal())
+        return
+      }
+
       if (!endDate) {
-        console.error('Дата окончания не указана')
+        setErrorMessage('Дата окончания не указана, укажите дату и повторите попытку')
+        dispatch(openErrorsModal())
+        return
+      }
+
+      const selectedDate = new Date(endDate)
+      const today = new Date()
+
+      if (selectedDate < today) {
+        setErrorMessage('Указана прошедшая дата. Пожалуйста, выберите будущую дату')
+        dispatch(openErrorsModal())
         return
       }
       
       for (const model of basketModels) {
         const count = modelsCount[model.id] || 0;
         if (count > model.count) {
-          dispatch(openErrorsModal());
+          setErrorMessage('Вы добавили товар, которого нет в наличии, проверьте корзину и повторите попытку')
+          dispatch(openErrorsModal())
           return;
         }
       }
@@ -71,13 +89,17 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
           furnitureId: model.id,
           count: modelsCount[model.id] || 0
         };
-  
+        
         await createSale(saleData)
+        dispatch(removeModelFromBasket(model.id))
       }
+
       setEndDate('')
+      refetch();
       onClose()
     } catch (error) {
-      console.error('Failed to create agreement and sales:', error);
+      setErrorMessage('Некоректный формат даты.')
+      dispatch(openErrorsModal())
     }
   }
 
@@ -149,6 +171,20 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
                             onChange={(e) => handleCountChange(model.id, e.target.value)}
                             label="Кол-во"
                             type='number'
+                            inputProps={{ min: 0 }}
+                            onKeyDown={(e) => {
+                              // Разрешаем только цифры, Backspace, Delete, ArrowLeft, ArrowRight и Tab
+                              if (
+                                !/[0-9]/.test(e.key) &&
+                                e.key !== "Backspace" &&
+                                e.key !== "Delete" &&
+                                e.key !== "ArrowLeft" &&
+                                e.key !== "ArrowRight" &&
+                                e.key !== "Tab"
+                              ) {
+                                e.preventDefault(); // Блокируем остальные символы
+                              }
+                            }}
                             fullWidth margin="normal"
                             style={{ marginLeft: '5px', width: '90%' }}
                           />
@@ -179,7 +215,7 @@ const BasketModal: React.FC<BasketModalProps> = ({ open, onClose }) => {
             </Button>
           </>
         )}
-        <ErrorsModal open={isErrorsModalOpen} onClose={() => dispatch(closeErrorsModal())} error={'Вы добавили товар, которого нет в наличии, проверьте корзину и повторите попытку'} />
+        <ErrorsModal open={isErrorsModalOpen} onClose={() => dispatch(closeErrorsModal())} error={errorMessage} />
       </Box>
     </Modal>
   );
@@ -192,7 +228,6 @@ const modalStyle = {
   transform: 'translate(-50%, -50%)',
   width: 400,
   bgcolor: 'background.paper',
-  border: '2px solid #000',
   boxShadow: 24,
   p: 4,
 };

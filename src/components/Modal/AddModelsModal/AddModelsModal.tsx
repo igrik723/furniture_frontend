@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { Modal, Box, TextField, Button, Typography, Input } from '@mui/material';
 import axios from 'axios';
 import {useCreateModelMutation } from '../../../app/services/furnitureModelApi';
+import { addTable } from '../../../features/furniture/tableSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { addCabinet } from '../../../features/furniture/cabinetSlice';
+import { addCupboard } from '../../../features/furniture/cupboardSlice';
+
 
 interface AuthModalProps {
     open: boolean;
@@ -9,6 +14,7 @@ interface AuthModalProps {
 }
 
 const AddModelsModal: React.FC<AuthModalProps> = ({ open, onClose }) => {
+    let typeOfModel = ''
     const [nameModel, setNameModel] = useState('')
     const [typeModel, setTypeModel] = useState('')
     const [property, setProperty] = useState('')
@@ -16,6 +22,7 @@ const AddModelsModal: React.FC<AuthModalProps> = ({ open, onClose }) => {
     const [count, setCount] = useState('')
     const [image, setImage] = useState<File | null>(null);
     const [createModel] = useCreateModelMutation();
+    const dispatch = useDispatch()
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -24,15 +31,34 @@ const AddModelsModal: React.FC<AuthModalProps> = ({ open, onClose }) => {
     }
 
     const addModel = async () => {
+        if (nameModel.toLowerCase().includes('стол') || typeModel.toLowerCase().includes('стол')) {
+            typeOfModel = 'table'
+        } else if (nameModel.toLowerCase().includes('тумба') || typeModel.toLowerCase().includes('тумба')) {
+            typeOfModel = 'cabinet'
+        } else if (nameModel.toLowerCase().includes('шкаф') || typeModel.toLowerCase().includes('шкаф')) {
+            typeOfModel = 'cupboard'
+        } else {
+            typeOfModel = ''
+        }
+        
         try {
-            await createModel({
+            const createdModel = await createModel({
                 furnitureName: nameModel,
                 furnitureType: typeModel,
                 Property: property,
                 Price: price,
                 count: count,
                 img: image
-            }).unwrap();
+            }).unwrap()
+
+            if (typeOfModel === 'table') {
+                dispatch(addTable(createdModel))
+            } else if (typeOfModel === 'cabinet') {
+                dispatch(addCabinet(createdModel))
+            } else if (typeOfModel === 'cupboard') {
+                dispatch(addCupboard(createdModel))
+            }
+            
 
             // Сбросить поля формы
             setNameModel('');

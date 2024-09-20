@@ -4,16 +4,22 @@ import { Modal, Box, Typography, TextField } from '@mui/material';
 import { Button } from 'react-bootstrap';
 import { useDispatch } from 'react-redux';
 import { useUpdateModelCountMutation } from '../../../app/services/furnitureModelApi';
+import { editTableCount } from '../../../features/furniture/tableSlice';
+import { editCabinetCount } from '../../../features/furniture/cabinetSlice';
+import { editCupboardCount } from '../../../features/furniture/cupboardSlice';
 
 interface UpdateModalProps {
     open: boolean,
     onClose: () => void,
-    id: number
+    id: number,
+    typeOfModel: string
+        
 }
 
-const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
+const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id, typeOfModel}) => {
     const [count, setCount] = useState('0')
     const [updateModelCount] = useUpdateModelCountMutation()
+    const dispatch = useDispatch()
 
     const handleUpdateBtn = async () => {
         try {
@@ -21,6 +27,13 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
                 id: id,
                 count: count
             })
+            if (typeOfModel === 'table') {
+                dispatch(editTableCount({ id: id, count: Number(count) }))
+            } else if (typeOfModel === 'cabinet') {
+                dispatch(editCabinetCount({ id: id, count: Number(count) }))
+            } else if (typeOfModel === 'cupboard') {
+                dispatch(editCupboardCount({ id: id, count: Number(count) }))
+            } 
             setCount('')
             onClose()
         } catch (error) {
@@ -32,7 +45,27 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ open, onClose, id }) => {
         <Modal open={open} onClose={onClose}>
             <Box sx={{ ...modalStyle }}>
                 <Typography variant="h6">Изменить количество на складе</Typography>
-                <TextField label="Новое кол-во" type="number" fullWidth margin="normal" value={count} onChange={(e) => setCount(e.target.value)} />
+                <TextField
+                    label="Новое кол-во"
+                    type="number"
+                    fullWidth margin="normal"
+                    value={count}
+                    onChange={(e) => setCount(e.target.value)}
+                    inputProps={{ min: 0 }}
+                    onKeyDown={(e) => {
+                        // Разрешаем только цифры, Backspace, Delete, ArrowLeft, ArrowRight и Tab
+                        if (
+                            !/[0-9]/.test(e.key) &&
+                            e.key !== "Backspace" &&
+                            e.key !== "Delete" &&
+                            e.key !== "ArrowLeft" &&
+                            e.key !== "ArrowRight" &&
+                            e.key !== "Tab"
+                        ) {
+                            e.preventDefault(); // Блокируем остальные символы
+                        }
+                    }}
+                />
                 <Button
                     onClick={handleUpdateBtn}
                 >
@@ -57,3 +90,4 @@ const modalStyle = {
 };
 
 export default UpdateModal
+
