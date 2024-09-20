@@ -4,6 +4,14 @@ import { api } from "./services/api";
 import modalReducer from "../features/modal/modalSlice";
 import userReducer from "../features/user/userSlice"
 import basketReducer from "../features/furniture/basketSlice"
+import tableReducer from "../features/furniture/tableSlice";
+import cabinetReducer from "../features/furniture/cabinetSlice";
+import cupboardReducer from "../features/furniture/cupboardSlice";
+
+
+
+
+
 
 export const store = configureStore({
     reducer: {
@@ -11,6 +19,9 @@ export const store = configureStore({
         modal: modalReducer,
         user: userReducer,
         basket: basketReducer,
+        tables: tableReducer,
+        cabinets: cabinetReducer,
+        cupboards: cupboardReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware().concat(api.middleware),
