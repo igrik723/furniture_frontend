@@ -13,6 +13,9 @@ import styles from './ModelCard.module.css'
 import { useDeleteModelMutation } from '../../../app/services/furnitureModelApi';
 import {useState } from 'react';
 import UpdateModal from '../../Modal/UpdateModal/UpdateModal';
+import { removeTable } from '../../../features/furniture/tableSlice';
+import { removeCabinet } from '../../../features/furniture/cabinetSlice';
+import { removeCupboard } from '../../../features/furniture/cupboardSlice';
 
 export interface furnitureData {
     id: number;
@@ -25,13 +28,13 @@ export interface furnitureData {
 }
 
 interface ModelCardProps {
-    furnitureData: furnitureData;
-    onRemove: (id: number) => void
+    furnitureData: furnitureData,
+    typeOfModel: string,
 }
 
 
 
-const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
+const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, typeOfModel}) => {
     const user = useSelector((state: RootState) => state.user)
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState(false)
     const [currentId, setCurrentId] = useState<number | null>(null) 
@@ -42,7 +45,15 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
     const handleDelete = async (id: number) => {
         try {
             await deleteModel(id).unwrap();
-            onRemove(id)
+            if (typeOfModel === 'table') {
+                dispatch(removeTable(id))
+            } else if (typeOfModel === 'cabinet') {
+                dispatch(removeCabinet(id))
+            } else if (typeOfModel === 'cupboard') {
+                dispatch(removeCupboard(id))
+            }
+            
+            
         } catch (error) {
             console.error("Не удалось удалить модель", error)
         }
@@ -114,7 +125,8 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, onRemove }) => {
                     <UpdateModal
                         open={isUpdateModalOpen}
                         onClose={handleCloseUpdateModal}
-                        id={currentId} 
+                        id={currentId}
+                        typeOfModel={typeOfModel}
                     />
                 )}
             </CardActions>
