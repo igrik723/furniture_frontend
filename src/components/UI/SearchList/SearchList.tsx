@@ -38,8 +38,8 @@ const SearchList: React.FC<SearchListProps> = ({ results, isLoading, isError }) 
                     onClick={() => handleClick(model)}
                 >
                     <div>
-                        <span className={styles.property}>Тип: {model.furnitureType}</span>
                         <span className={styles.property}>Название: {model.furnitureName}</span>
+                        <span className={styles.property}>Тип: {model.furnitureType}</span>
                         <span className={styles.property}>Свойства: {model.Property}</span>
                         <span className={styles.property}>Цена: {model.Price}</span>
                     </div>
