@@ -75,12 +75,18 @@ const ModelCard: React.FC<ModelCardProps> = ({ furnitureData, typeOfModel}) => {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardActionArea>
-                <CardMedia
+            <CardActionArea
+            >
+                <div
+                    className={styles.modelImgContainer}
+                >
+                    <CardMedia
+                    className={styles.furnitureImg}
                     component="img"
                     height="140"
                     image={BASE_URL + '/' + furnitureData.imageUrl}
                 />
+                </div>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {furnitureData.furnitureName}

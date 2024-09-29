@@ -7,7 +7,7 @@ import { RootState } from '../../app/store'
 import { setCupboards } from '../../features/furniture/cupboardSlice'
 
 const CupboardPage = () => {
-  const { data: fetchedCupboard, error, isLoading } = useSearchModelsQuery('шкаф')
+  const { data: fetchedCupboard, error, isLoading } = useSearchModelsQuery('Шкаф')
   const cupboards = useSelector((state: RootState) => state.cupboards.cupboards)
   const dispatch = useDispatch()
 

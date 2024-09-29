@@ -8,9 +8,10 @@ import { setTables } from '../../features/furniture/tableSlice';
 
 
 const TablePage: React.FC = () => {
-  const { data: fetchedTables, error, isLoading } = useSearchModelsQuery('стол')
+  const { data: fetchedTables, error, isLoading } = useSearchModelsQuery('Стол')
   const typeOfModel = 'table'
   const tables = useSelector((state: RootState) => state.tables.tables)
+  console.log(fetchedTables)
   const dispatch = useDispatch()
 
   useEffect(() => {
@@ -26,6 +27,7 @@ const TablePage: React.FC = () => {
       className={styles.TablePageContainer}
     >
       <div className={styles.ModelCardContainer}>
+  
         {tables.map((table) =>
           <ModelCard
             key={table.id}

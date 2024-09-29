@@ -8,7 +8,7 @@ import { setCabinets } from '../../features/furniture/cabinetSlice'
 
 
 const CupboardPage = () => {
-  const { data: fetchedCabinets, error, isLoading } = useSearchModelsQuery('тумба')
+  const { data: fetchedCabinets, error, isLoading } = useSearchModelsQuery('Тумба')
   const typeOfModel = 'cabinet'
   const cabinets = useSelector((state: RootState) => state.cabinets.cabinets)
   const dispatch = useDispatch()
