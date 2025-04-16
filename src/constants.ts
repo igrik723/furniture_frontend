@@ -1,1 +1,1 @@
-export const BASE_URL = 'http://localhost:5001';
+export const BASE_URL = 'https://furniturebackend-production-75a5.up.railway.app';
